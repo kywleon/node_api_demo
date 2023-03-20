@@ -14,6 +14,7 @@ app.post("/dogs", (req , res) => {
     res.json({ message: "ok"})
 })
 
+//put
 app.put("/dogs/:id", (req , res) => {
     console.log(req.params.id)
     console.log(req.body)
