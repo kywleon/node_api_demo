@@ -1,5 +1,20 @@
-const express = require('express');
-var bodyParser = require('body-parser')
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+
+const mongoDB = 'mongodb://locahost:27017/dog_api'
+mongoose.connect(mongoDB, {useNewUrlParser: true , useUnifiedTopology : true});
+
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'MongoDB connection error:'))
+
+const dogSchema = new mongoose.Schema({
+    name: String,
+    breed: String,
+    age: Number
+});
+
+const Dog = mongoose.model('Dog' , dogSchema)
 
 const app = express();
 
@@ -30,18 +45,19 @@ app.delete("/dogs/:id", (req , res) => {
 //get 
 const port = 4567;
 
-const dogs = [
-    {
-        name: "Jimbob",
-        breed: "Husky"
-    },
-    {
-        name: "Sam",
-        breed: "Lab"
-    }
-];
+// const dogs = [
+//     {
+//         name: "Jimbob",
+//         breed: "Husky"
+//     },
+//     {
+//         name: "Sam",
+//         breed: "Lab"
+//     }
+// ];
 
 app.get("/", (req, res) => {
+    const dogs = Dog.find()
     // console.log(req)
     res.json(dogs)
 })
